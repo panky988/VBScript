@@ -2,24 +2,24 @@ Option Explicit
  
 Dim objshell,path,DigitalID, Result  
 Set objshell = CreateObject("WScript.Shell") 
-'Set registry key path 
+'Állítsa be a rendszerleíró kulcs útvonalát
 Path = "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\" 
-'Registry key value 
+'Kulcs értéke
 DigitalID = objshell.RegRead(Path & "DigitalProductId") 
 Dim ProductName,ProductID,ProductKey,ProductData 
-'Get ProductName, ProductID, ProductKey 
-ProductName = "Product Name: " & objshell.RegRead(Path & "ProductName") 
-ProductID = "Product ID: " & objshell.RegRead(Path & "ProductID") 
-ProductKey = "Installed Key: " & ConvertToKey(DigitalID)  
+'Név, Azonosító, Kulcs 
+ProductName = "Nev: " & objshell.RegRead(Path & "ProductName") 
+ProductID = "Azonosito: " & objshell.RegRead(Path & "ProductID") 
+ProductKey = "Kulcs: " & ConvertToKey(DigitalID)  
 ProductData = ProductName  & vbNewLine & ProductID  & vbNewLine & ProductKey 
-'Show messbox if save to a file  
-If vbYes = MsgBox(ProductData  & vblf & vblf & "Save to a file?", vbYesNo + vbQuestion, "BackUp Windows Key Information") then 
+'Üzenet fájlba mentéshez 
+If vbYes = MsgBox(ProductData  & vblf & vblf & "Menti fajlba?", vbYesNo + vbQuestion, "BackUp Windows Key Information") then 
    Save ProductData  
 End If 
  
  
  
-'Convert binary to chars 
+'Konvertálja a bináris karaktereket karakterekké
 Function ConvertToKey(Key) 
     Const KeyOffset = 52 
     Dim isWin8, Maps, i, j, Current, KeyOutput, Last, keypart1, insert 
@@ -55,14 +55,14 @@ Function ConvertToKey(Key)
     
      
 End Function 
-'Save data to a file 
+'Adatok mentése fájlba
 Function Save(Data) 
     Dim fso, fName, txt,objshell,UserName 
     Set objshell = CreateObject("wscript.shell") 
-    'Get current user name  
+    'Az aktuális felhasználói név beolvasása
     UserName = objshell.ExpandEnvironmentStrings("%UserName%")  
-    'Create a text file on desktop  
-    fName = "C:\Users\" & UserName & "\Desktop\WindowsKeyInfo.txt" 
+    'Hozzon létre egy szöveges fájlt az asztalon
+    fName = "C:\Users\" & UserName & "\Desktop\WindowsKulcsInfo.txt" 
     Set fso = CreateObject("Scripting.FileSystemObject") 
     Set txt = fso.CreateTextFile(fName) 
     txt.Writeline Data 
