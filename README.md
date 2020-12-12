@@ -1,1 +1,3 @@
-# teszt
+# VBScript
+VBScript
+
